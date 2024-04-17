@@ -171,8 +171,26 @@ public class Cpu
         SetHalfCarrySub(_register.A, value);
         SetCarry(result);
     }
+
+    public byte Inc(byte value)
+    {
+        int result = value + 1;
+        _register.F.Zero = (result & 0xFF) == 0;
+        _register.F.Negative = false;
+        SetHalfCarry(value, 1);
+        return (byte) result;
+    }
     
-    
+    public byte Dec(byte value)
+    {
+        int result = value - 1;
+        _register.F.Zero = (result & 0xFF) == 0;
+        _register.F.Negative = true;
+        SetHalfCarrySub(value, 1);
+        return (byte) result;
+    }
+
+
     #endregion Arithmetic
 
 
