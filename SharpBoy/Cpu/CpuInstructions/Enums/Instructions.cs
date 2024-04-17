@@ -2,5 +2,8 @@
 
 public enum Instructions
 {
-    Add
+    Add,
+    AddHl,
+    Adc,
+    Sub
 }
