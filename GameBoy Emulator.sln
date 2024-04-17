@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpBoy", "SharpBoy\SharpBoy.csproj", "{1FF88CAC-C8E7-4584-AA1E-1F426B37FE63}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpBoyUnitTests", "SharpBoyUnitTests\SharpBoyUnitTests.csproj", "{833E22B6-73CE-4586-B2AE-5BF0CF4502E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{1FF88CAC-C8E7-4584-AA1E-1F426B37FE63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FF88CAC-C8E7-4584-AA1E-1F426B37FE63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FF88CAC-C8E7-4584-AA1E-1F426B37FE63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{833E22B6-73CE-4586-B2AE-5BF0CF4502E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{833E22B6-73CE-4586-B2AE-5BF0CF4502E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{833E22B6-73CE-4586-B2AE-5BF0CF4502E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{833E22B6-73CE-4586-B2AE-5BF0CF4502E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SharpBoy")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5a55ba83d8935a189e37965867e561b8b29230d2")]
 [assembly: System.Reflection.AssemblyProductAttribute("SharpBoy")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SharpBoy")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
