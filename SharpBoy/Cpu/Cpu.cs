@@ -100,7 +100,7 @@ public class Cpu
 
     }
 
-    public byte Sub(byte valueToSubtract)
+    public void Sub(byte valueToSubtract)
     {
 
         byte newValue = _register.SubtractBytes(_register.A, valueToSubtract, out var borrow);
@@ -113,8 +113,9 @@ public class Cpu
 
         SetRegisterValue(ArithmeticTarget.A, newValue);
 
-        return newValue;
     }
+    
+    
     
     
     #endregion Arithmetic
