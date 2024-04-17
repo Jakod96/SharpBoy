@@ -1,6 +1,6 @@
-namespace SharpBoy.Structs;
+namespace SharpBoy.Cpu.Models;
 
-public struct RegisterStruct
+public class Register
 {
     //We represent each register as a 8bit register instead of having 16bits as they actually are.
     public byte A { get; set; }
@@ -8,7 +8,7 @@ public struct RegisterStruct
     public byte C { get; set; } //BC
     public byte D { get; set; } //DE
     public byte E { get; set; } //DE
-    public FlagRegisterStruct F { get; set; }
+    public FlagRegister F { get; set; }
     public byte H { get; set; } //HL
     public byte L { get; set; } //HL
     public ushort BC {
@@ -54,5 +54,41 @@ public struct RegisterStruct
             H = (byte)((value & 0xFF00) >> 8);
             L = (byte)(value & 0xFF);
         }
+    }
+    
+    public byte AddBytes(byte a, byte b, out bool carry)
+    {
+        int sum = a + b;
+        carry = sum > byte.MaxValue;
+        byte result = (byte)sum;
+        
+        F.Zero = result == 0;
+        F.Subtract = false;
+        F.Carry = carry;
+        
+        return result;
+    }
+
+    public byte SubtractBytes(byte a, byte b, out bool borrow)
+    {
+        int result = a - b;
+        borrow = result < 0;
+
+        // If borrow occurred, adjust result by adding 256 to get correct byte value
+        if (borrow)
+        {
+            result += 256;
+        }
+
+        byte newValue = (byte)result;
+
+        return newValue;
+    }
+    
+    public ushort AddWord(ushort a, ushort b, out bool carry)
+    {
+        int sum = a + b;
+        carry = sum > ushort.MaxValue;
+        return (ushort)sum;
     }
 }

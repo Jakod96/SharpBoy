@@ -1,18 +1,18 @@
-﻿using SharpBoy.Structs;
+﻿using SharpBoy.Cpu.Models;
 
-namespace SharpBoyUnitTests.Structs;
+namespace SharpBoyUnitTests.Models;
 
-public class FlagRegisterStructTests
+public class FlagRegisterTests
 {
     [Fact]
     public void AsByte_ConvertFromRegisterAndBack_IsEqual()
     {
         //Arrange
-        var registerStruct = new FlagRegisterStruct(0b10100000);
+        var registerStruct = new FlagRegister(0b10100000);
         var registerByte = registerStruct.AsByte();
         
         //Act
-        var newRegisterStruct = new FlagRegisterStruct(registerByte);
+        var newRegisterStruct = new FlagRegister(registerByte);
         
         //Assert
         Assert.Equal(registerStruct, newRegisterStruct);

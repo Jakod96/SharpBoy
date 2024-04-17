@@ -1,6 +1,6 @@
-﻿namespace SharpBoy.Structs;
+﻿namespace SharpBoy.Cpu.Models;
 
-public struct FlagRegisterStruct
+public class FlagRegister
 {
     //BitNrs
     private const ushort ZeroFlagBytePosition = 7;
@@ -8,7 +8,7 @@ public struct FlagRegisterStruct
     private const ushort HalfCarryBytePosition = 5;
     private const ushort CarryFlagBytePosition = 4;
 
-    public FlagRegisterStruct(byte flags)
+    public FlagRegister(byte flags)
     {
         Zero = ((flags >> ZeroFlagBytePosition) & 0b1) != 0;
         Subtract = ((flags >> SubtractFlagBytePosition) & 0b1) != 0;

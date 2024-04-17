@@ -1,4 +1,4 @@
-﻿namespace SharpBoy.Instructions.Enums;
+﻿namespace SharpBoy.Cpu.CpuInstructions.Enums;
 
 public enum ArithmeticTarget
 {
