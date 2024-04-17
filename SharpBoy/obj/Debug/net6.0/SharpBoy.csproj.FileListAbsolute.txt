@@ -1,0 +1,5 @@
+C:\Users\Jakob\RiderProjects\GameBoy Emulator\SharpBoy\obj\Debug\net6.0\SharpBoy.csproj.AssemblyReference.cache
+C:\Users\Jakob\RiderProjects\GameBoy Emulator\SharpBoy\obj\Debug\net6.0\SharpBoy.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Jakob\RiderProjects\GameBoy Emulator\SharpBoy\obj\Debug\net6.0\SharpBoy.AssemblyInfoInputs.cache
+C:\Users\Jakob\RiderProjects\GameBoy Emulator\SharpBoy\obj\Debug\net6.0\SharpBoy.AssemblyInfo.cs
+C:\Users\Jakob\RiderProjects\GameBoy Emulator\SharpBoy\obj\Debug\net6.0\SharpBoy.csproj.CoreCompileInputs.cache
