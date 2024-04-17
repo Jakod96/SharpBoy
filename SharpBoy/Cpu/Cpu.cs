@@ -85,7 +85,7 @@ public class Cpu
         ushort registerValue = _register.HL;
 
         ushort newValue = _register.AddWord(registerValue, valueToAdd, out var carry);
-        _register.F.HalfCarry = ((_register.A & 0xFFF) + valueToAdd & 0xFFF) > 0xFFF;
+        SetHalfCarry(_register.A, valueToAdd); //TODO: Check if it really should be A
 
         _register.HL = newValue;
 
@@ -93,30 +93,117 @@ public class Cpu
 
     public void Adc(byte valueToAdd)
     {
-        int carryValue = _register.F.Carry ? 0 : 1;
-        byte newValue = _register.AddBytes(_register.A, (byte) (valueToAdd + carryValue), out var carry);
-        _register.F.HalfCarry = (_register.A & 0xF) + (valueToAdd & 0xF) > 0xF;
+        int carryValue = _register.F.Carry ? 1 : 0;
+        byte newValue = _register.AddBytes(_register.A, valueToAdd, out var carry, carryValue);
+        if (carry)
+        {
+            SetHalfCarryWithCarry(_register.A, valueToAdd);
+            
+        }
+        else
+        {
+            SetHalfCarry(_register.A, valueToAdd);
+        }
         SetRegisterValue(ArithmeticTarget.A, newValue);
 
     }
 
     public void Sub(byte valueToSubtract)
     {
-
         byte newValue = _register.SubtractBytes(_register.A, valueToSubtract, out var borrow);
-        _register.F.Zero = newValue == 0;
-        _register.F.Subtract = true;
-        _register.F.Carry = borrow;
+        SetHalfCarrySub(_register.A, valueToSubtract);
+        SetRegisterValue(ArithmeticTarget.A, newValue);
+    }
 
-        // Check for half borrow
-        _register.F.HalfCarry = (valueToSubtract & 0xF) > (_register.A & 0xF);
+    public void Sbc(byte valueToSubtract)
+    {
+        int carryValue = _register.F.Carry ? 1 : 0;
+        byte newValue = _register.SubtractBytes(_register.A, valueToSubtract, out var borrow, carryValue);
+
+        if (borrow)
+        {
+            SetHalfCarrySubWithCarry(_register.A, valueToSubtract);
+        }
+        else
+        {
+            SetHalfCarrySub(_register.A, valueToSubtract);
+        }
 
         SetRegisterValue(ArithmeticTarget.A, newValue);
+    }
 
+
+    public void And(byte value)
+    {
+        byte result = (byte)(_register.A & value);
+        _register.F.Zero = result == 0;
+        _register.F.Negative = false;
+        _register.F.HalfCarry = true;
+        _register.F.Carry = false;
+        _register.A = result;
+    }
+
+    public void Xor(byte value)
+    {
+        byte result = (byte)(_register.A & value);
+        _register.F.Zero = result == 0;
+        _register.F.Negative = false;
+        _register.F.HalfCarry = false;
+        _register.F.Carry = false;
+        _register.A = result;
+    }
+    
+    public void Or(byte value)
+    {
+        byte result = (byte)(_register.A | value);
+        _register.F.Zero = result == 0;
+        _register.F.Negative = false;
+        _register.F.HalfCarry = false;
+        _register.F.Carry = false;
+        _register.A = result;
+    }
+
+    public void Cp(byte value)
+    {
+        int result = _register.A - value;
+        _register.F.Negative = false;
+        _register.F.Zero = result == 0;
+        SetHalfCarrySub(_register.A, value);
+        SetCarry(result);
     }
     
     
-    
-    
     #endregion Arithmetic
+
+
+    #region FlagHelpers
+    private void SetHalfCarry(ushort value1, ushort value2)
+    {
+        _register.F.HalfCarry = (value1 & 0xFFF) + (value2 & 0xFFF) > 0xFFF;
+
+    }
+    
+    private void SetHalfCarry(byte value1, byte value2)
+    {
+        _register.F.HalfCarry = (value1 & 0xF) + (value2 & 0xF) > 0xF;
+    }
+    private void SetHalfCarryWithCarry(byte value1, byte value2)
+    {
+        _register.F.HalfCarry = (value1 & 0xF) + (value2 & 0xF) >= 0xF;
+    }
+    
+    private void SetHalfCarrySub(byte value1, byte value2)
+    {
+        _register.F.HalfCarry = (value1 & 0xF) < (value2 & 0xF);
+    }
+    private void SetHalfCarrySubWithCarry(byte b1, byte b2) {
+        int carry = _register.F.Carry ? 1 : 0;
+        _register.F.HalfCarry = (b1 & 0xF) < ((b2 & 0xF) + carry);
+    }
+
+    private void SetCarry(int i)
+    {
+        _register.F.Carry = (i >> 8) != 0;
+    }
+    #endregion
 }

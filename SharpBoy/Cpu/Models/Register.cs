@@ -8,7 +8,7 @@ public class Register
     public byte C { get; set; } //BC
     public byte D { get; set; } //DE
     public byte E { get; set; } //DE
-    public FlagRegister F { get; set; }
+    public FlagRegister F { get; set; } = new(0);
     public byte H { get; set; } //HL
     public byte L { get; set; } //HL
     public ushort BC {
@@ -56,22 +56,22 @@ public class Register
         }
     }
     
-    public byte AddBytes(byte a, byte b, out bool carry)
+    public byte AddBytes(byte a, byte b, out bool carry, int carryValue = 0)
     {
-        int sum = a + b;
+        int sum = a + b + carryValue;
         carry = sum > byte.MaxValue;
         byte result = (byte)sum;
         
         F.Zero = result == 0;
-        F.Subtract = false;
+        F.Negative = false;
         F.Carry = carry;
         
         return result;
     }
 
-    public byte SubtractBytes(byte a, byte b, out bool borrow)
+    public byte SubtractBytes(byte a, byte b, out bool borrow, int carryValue = 0)
     {
-        int result = a - b;
+        int result = a - b - carryValue;
         borrow = result < 0;
 
         // If borrow occurred, adjust result by adding 256 to get correct byte value
@@ -81,7 +81,10 @@ public class Register
         }
 
         byte newValue = (byte)result;
-
+        F.Zero = newValue == 0;
+        F.Negative = true;
+        F.Carry = borrow;
+        
         return newValue;
     }
     
@@ -89,6 +92,12 @@ public class Register
     {
         int sum = a + b;
         carry = sum > ushort.MaxValue;
-        return (ushort)sum;
+        ushort result = (byte)sum;
+
+        F.Zero = result == 0;
+        F.Negative = false;
+        F.Carry = carry;
+        
+        return result;
     }
 }
