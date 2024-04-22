@@ -190,7 +190,158 @@ public class Cpu
         return (byte) result;
     }
 
+    public void CCF()
+    {
+        _register.F.Carry = !_register.F.Carry;
+        _register.F.Negative = false;
+        _register.F.HalfCarry = false;
+    }
 
+    public void SCF()
+    {
+        _register.F.Carry = true;
+        _register.F.Negative = false;
+        _register.F.HalfCarry = false;
+    }
+
+    public void RRA()
+    {
+        var carry = _register.F.Carry;
+        _register.F = new(0);
+        _register.F.Carry = (_register.A & 0x1) != 0;
+        _register.A = (byte)(_register.A >> 1 | (carry ? 0x80 : 0));
+    }
+
+    public void RLA()
+    {
+        var carry = _register.F.Carry;
+        _register.F = new(0);
+        _register.F.Carry = (_register.A & 0x1) != 0;
+        _register.A = (byte)(_register.A << 1 | (carry ? 0x80 : 0));
+    }
+
+    public void RRCA()
+    {
+        _register.F = new(0);
+        _register.F.Carry = (_register.A & 0x1) != 0;
+        _register.A = (byte)(_register.A >> 1 | (_register.A << 7));
+    }
+    public void RRLA()
+    {
+        _register.F = new(0);
+        _register.F.Carry = (_register.A & 0x1) != 0;
+        _register.A = (byte)(_register.A << 1 | (_register.A >> 7));
+    }
+
+    public void Cpl()
+    {
+        _register.A = (byte) ~_register.A;
+        _register.F.Negative = true;
+        _register.F.HalfCarry = true;
+    }
+
+    public void Bit(byte value, ArithmeticTarget target)
+    {
+        var registerValue = GetRegisterValue(target);
+        _register.F.Zero = (value & registerValue) == 0;
+        _register.F.Negative = false;
+        _register.F.HalfCarry = true;
+    }
+
+    //Should maybe just be ignored?
+    //SET woulöd be the same
+    public void Reset(ArithmeticTarget target)
+    {
+        SetRegisterValue(target, 0);
+    }
+
+    public void SRL(ArithmeticTarget target)
+    {
+        var value = GetRegisterValue(target);
+        byte newValue = (byte) (value >> 1);
+        _register.F.Zero = newValue != 0;
+        _register.F.Negative = false;
+        _register.F.HalfCarry = false;
+        SetCarry(value);
+    }
+
+    public void RR(ArithmeticTarget target)
+    {
+        var carry = _register.F.Carry;
+        var value = GetRegisterValue(target);
+        var newValue = (byte)(value >> 1 | (carry ? 0x80 : 0));
+        _register.F.Zero = newValue != 0;
+        _register.F.Negative = false;
+        _register.F.HalfCarry = false;
+        SetCarry(value);
+        SetRegisterValue(target, newValue);
+    }
+    
+    public void RL(ArithmeticTarget target)
+    {
+        var carry = _register.F.Carry;
+        var value = GetRegisterValue(target);
+        var newValue = (byte)(value << 1 | (carry ? 1 : 0));
+        _register.F.Zero = newValue != 0;
+        _register.F.Negative = false;
+        _register.F.HalfCarry = false;
+        SetCarry(value);
+        SetRegisterValue(target, newValue);
+    }
+
+    public void RRC(ArithmeticTarget target)
+    {
+        var value = GetRegisterValue(target);
+        var newValue = (byte)(value >> 1 | value << 7);
+        _register.F.Zero = newValue != 0;
+        _register.F.Negative = false;
+        _register.F.HalfCarry = false;
+        SetCarry(value);
+        SetRegisterValue(target, newValue);
+    }
+    
+    public void RLC(ArithmeticTarget target)
+    {
+        var value = GetRegisterValue(target);
+        var newValue = (byte)(value << 1 | value >> 7);
+        _register.F.Zero = newValue != 0;
+        _register.F.Negative = false;
+        _register.F.HalfCarry = false;
+        SetCarry(value);
+        SetRegisterValue(target, newValue);
+    }
+
+    public void SRA(ArithmeticTarget target)
+    {
+        var value = GetRegisterValue(target);
+        var newValue = (byte)(value >> 1 | value & 0x80);
+        _register.F.Zero = newValue != 0;
+        _register.F.Negative = false;
+        _register.F.HalfCarry = false;
+        SetCarry(value);
+        SetRegisterValue(target, newValue);
+    }
+    public void SLA(ArithmeticTarget target)
+    {
+        var value = GetRegisterValue(target);
+        var newValue = (byte)(value << 1 | value & 0x80);
+        _register.F.Zero = newValue != 0;
+        _register.F.Negative = false;
+        _register.F.HalfCarry = false;
+        SetCarry(value);
+        SetRegisterValue(target, newValue);
+    }
+
+    public void Swap(ArithmeticTarget target)
+    {
+        var value = GetRegisterValue(target);
+        var newValue = (byte)((value & 0xF0) >> 4 | ((value & 0x0F) << 4));
+        _register.F.Zero = newValue != 0;
+        _register.F.Negative = false;
+        _register.F.HalfCarry = false;
+        _register.F.Carry = false;
+    }
+    
     #endregion Arithmetic
 
 
